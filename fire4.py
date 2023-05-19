@@ -1,0 +1,35 @@
+import pygame
+from support import import_folder
+
+class Fire(pygame.sprite.Sprite):
+    def __init__(self, pos):
+        super().__init__()
+        self.import_character_assets()
+        self.frame_index = 0
+        self.animation_speed = 0.05
+        self.image = self.animations['faucet run'][self.frame_index]
+        self.rect = self.image.get_rect(midtop=pos)
+        
+
+    def import_character_assets(self):
+        character_path = 'C:/Users/WORKSTATION/Desktop/GameProject/assets/water/'
+        self.animations = {'faucet run': []}
+
+        for animation in self.animations.keys():
+            full_path = character_path + animation
+            self.animations[animation] = import_folder(full_path)
+
+    def animate(self):
+        animation = self.animations['faucet run']
+
+        # loop over the frame index
+        self.frame_index += self.animation_speed
+        if self.frame_index >= len(animation):
+            self.frame_index = 0
+
+        image = animation[int(self.frame_index)]
+        self.image = image
+
+    def update(self, x_shift):
+        self.rect.x += x_shift
+        self.animate()
